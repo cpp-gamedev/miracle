@@ -4,6 +4,7 @@
 #include <le2d/event.hpp>
 #include <le2d/renderer.hpp>
 #include <le2d/service_locator.hpp>
+#include "lighhouse.hpp"
 
 namespace miracle {
 class Game {
@@ -18,8 +19,8 @@ class Game {
   private:
 	gsl::not_null<le::ServiceLocator const*> m_services;
 
-	le::drawable::Triangle m_triangle{};
 	le::drawable::Circle m_circle{};
+	Lighthouse m_lighthouse;
 
 	glm::vec2 m_cursor_pos{};
 };
