@@ -1,6 +1,8 @@
 #include <imgui.h>
 #include <app.hpp>
 #include <djson/json.hpp>
+#include <game.hpp>
+#include <klib/visitor.hpp>
 #include <log.hpp>
 
 namespace miracle {
@@ -19,13 +21,22 @@ App::App() : m_context(context_ci), m_data_loader(le::FileDataLoader::upfind("as
 }
 
 void App::run() {
+	auto game = Game{&m_services};
+
+	auto const event_visitor = klib::SubVisitor{
+		[&game](le::event::CursorPos const& cursor_pos) { game.on_cursor_pos(cursor_pos); },
+	};
+
+	auto delta_time = kvf::DeltaTime{};
 	while (m_context.is_running()) {
 		m_context.next_frame();
-
-		ImGui::ShowDemoWindow();
-
+		auto const dt = delta_time.tick();
+		for (auto const& event : m_context.event_queue()) { std::visit(event_visitor, event); }
+		game.tick(dt);
+		if (auto renderer = m_context.begin_render()) { game.render(renderer); }
 		m_context.present();
 	}
+	m_context.wait_idle();
 }
 
 void App::bind_services() {
