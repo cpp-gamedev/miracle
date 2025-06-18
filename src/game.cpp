@@ -4,7 +4,9 @@
 #include "lighhouse.hpp"
 
 namespace miracle {
-Game::Game(gsl::not_null<le::ServiceLocator const*> services) : m_services(services), m_lighthouse(services) { m_circle.create(50.0f); }
+Game::Game(gsl::not_null<le::ServiceLocator const*> services) : m_services(services), m_lighthouse(services), m_enemy(services, {0, 0}) {
+	m_circle.create(70.0f);
+}
 
 void Game::on_cursor_pos(le::event::CursorPos const& cursor_pos) {
 	auto const framebuffer_size = m_services->get<le::Context>().framebuffer_size();
@@ -19,5 +21,6 @@ void Game::tick([[maybe_unused]] kvf::Seconds const dt) {
 void Game::render(le::Renderer& renderer) const {
 	m_circle.draw(renderer);
 	m_lighthouse.render(renderer);
+	m_enemy.render(renderer);
 }
 } // namespace miracle

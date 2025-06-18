@@ -4,6 +4,7 @@
 #include <le2d/event.hpp>
 #include <le2d/renderer.hpp>
 #include <le2d/service_locator.hpp>
+#include "enemy.hpp"
 #include "lighhouse.hpp"
 
 namespace miracle {
@@ -21,7 +22,7 @@ class Game {
 
 	le::drawable::Circle m_circle{};
 	Lighthouse m_lighthouse;
-
+	Enemy m_enemy;
 	glm::vec2 m_cursor_pos{};
 };
 } // namespace miracle
