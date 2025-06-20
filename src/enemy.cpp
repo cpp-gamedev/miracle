@@ -1,5 +1,6 @@
 #include <enemy.hpp>
 #include <algorithm>
+#include <numbers>
 #include "glm/ext/vector_float2.hpp"
 #include "glm/geometric.hpp"
 #include "kvf/color.hpp"
