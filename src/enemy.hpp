@@ -13,17 +13,18 @@
 namespace miracle {
 class Enemy {
   public:
-	explicit Enemy(gsl::not_null<le::ServiceLocator const*> services, glm::vec2 target_pos);
+	explicit Enemy(gsl::not_null<le::ServiceLocator const*> services, glm::vec2 target_pos, float move_speed);
 
 	void render(le::Renderer& renderer) const;
-	void move();
+	void move(kvf::Seconds dt);
 
   private:
-	glm::vec2 generate_spawn_pos(glm::vec2 screen_size);
+	static glm::vec2 generate_spawn_pos(glm::vec2 screen_size);
 
 	gsl::not_null<le::ServiceLocator const*> m_services;
 	std::optional<le::Texture> m_texture;
 	le::drawable::Circle m_sprite{};
 	glm::vec2 m_target_pos;
+	float m_move_speed;
 };
 } // namespace miracle
