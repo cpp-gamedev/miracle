@@ -2,6 +2,7 @@
 #include <glm/ext/vector_float2.hpp>
 #include <klib/assert.hpp>
 #include <klib/concepts.hpp>
+#include <numbers>
 #include <random>
 
 namespace miracle::util {
