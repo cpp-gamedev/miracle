@@ -16,15 +16,13 @@ class Enemy {
 	explicit Enemy(gsl::not_null<le::ServiceLocator const*> services, glm::vec2 target_pos, float move_speed);
 
 	void render(le::Renderer& renderer) const;
-	void move(kvf::Seconds dt);
+	void translate(kvf::Seconds dt);
 
   private:
-	static glm::vec2 generate_spawn_pos(glm::vec2 screen_size);
-
 	gsl::not_null<le::ServiceLocator const*> m_services;
 	std::optional<le::Texture> m_texture;
 	le::drawable::Circle m_sprite{};
-	glm::vec2 m_target_pos;
-	float m_move_speed;
+	glm::vec2 m_target_pos{};
+	float m_move_speed{};
 };
 } // namespace miracle

@@ -1,7 +1,6 @@
 #include <game.hpp>
 #include <glm/gtx/norm.hpp>
 #include <le2d/context.hpp>
-#include "glm/ext/vector_float2.hpp"
 #include "lighhouse.hpp"
 
 namespace miracle {
@@ -17,7 +16,7 @@ void Game::on_cursor_pos(le::event::CursorPos const& cursor_pos) {
 void Game::tick([[maybe_unused]] kvf::Seconds const dt) {
 	m_circle.transform.position = m_cursor_pos;
 	m_lighthouse.rotate_towards_cursor(m_cursor_pos);
-	m_enemy.move(dt);
+	m_enemy.translate(dt);
 }
 
 void Game::render(le::Renderer& renderer) const {

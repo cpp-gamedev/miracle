@@ -7,7 +7,7 @@ Lighthouse::Lighthouse(gsl::not_null<le::ServiceLocator const*> services) : m_se
 	m_sprite.create(200.0f);
 	auto const& data_loader = services->get<le::IDataLoader>();
 	auto const& context = services->get<le::Context>();
-	auto asset_loader = le::AssetLoader{&data_loader, &context};
+	auto const asset_loader = le::AssetLoader{&data_loader, &context};
 	m_texture = asset_loader.load_texture("images/lighthouse.png");
 	m_sprite.texture = &m_texture.value();
 }
