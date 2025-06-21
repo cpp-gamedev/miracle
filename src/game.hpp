@@ -16,13 +16,17 @@ class Game {
 
 	void tick(kvf::Seconds dt);
 	void render(le::Renderer& renderer) const;
-
+	void spawn_wave();
   private:
 	gsl::not_null<le::ServiceLocator const*> m_services;
 
 	le::drawable::Circle m_circle{};
 	Lighthouse m_lighthouse;
-	Enemy m_enemy;
 	glm::vec2 m_cursor_pos{};
+	int m_wave_count{};
+	bool m_running{true};
+	kvf::Seconds m_wave_interval{};
+	kvf::Seconds m_time_since_last_wave_spawn{};
+	std::vector<Enemy> m_enemies{};
 };
 } // namespace miracle
