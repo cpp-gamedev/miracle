@@ -17,6 +17,9 @@ class Enemy {
 
 	void render(le::Renderer& renderer) const;
 	void translate(kvf::Seconds dt);
+	// There are temporary parameters, will take the light beam object once it is created
+	void check_collision(glm::vec2 pos, float radius);
+	[[nodiscard]] std::size_t get_health() const { return m_health; }
 
   private:
 	gsl::not_null<le::ServiceLocator const*> m_services;
@@ -24,5 +27,7 @@ class Enemy {
 	le::drawable::Circle m_sprite{};
 	glm::vec2 m_target_pos{};
 	float m_move_speed{};
+	float m_diameter{};
+	std::size_t m_health{100};
 };
 } // namespace miracle

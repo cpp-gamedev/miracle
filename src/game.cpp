@@ -1,6 +1,7 @@
 #include <game.hpp>
 #include <glm/gtx/norm.hpp>
 #include <le2d/context.hpp>
+#include <algorithm>
 #include <cstddef>
 #include <vector>
 #include "enemy.hpp"
@@ -26,7 +27,11 @@ void Game::tick([[maybe_unused]] kvf::Seconds const dt) {
 		spawn_wave();
 		m_time_since_last_wave_spawn = kvf::Seconds{};
 	}
-	for (auto& enemy : m_enemies) { enemy.translate(dt); }
+	for (auto& enemy : m_enemies) {
+		enemy.check_collision(m_circle.transform.position, 50.0f);
+		enemy.translate(dt);
+	}
+	std::erase_if(m_enemies, [](Enemy const& enemy) { return !enemy.get_health(); });
 	m_circle.transform.position = m_cursor_pos;
 	m_lighthouse.rotate_towards_cursor(m_cursor_pos);
 }
