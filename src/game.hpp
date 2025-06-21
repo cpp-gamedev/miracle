@@ -4,6 +4,7 @@
 #include <le2d/event.hpp>
 #include <le2d/renderer.hpp>
 #include <le2d/service_locator.hpp>
+#include <cstddef>
 #include "enemy.hpp"
 #include "lighhouse.hpp"
 
@@ -23,7 +24,7 @@ class Game {
 	le::drawable::Circle m_circle{};
 	Lighthouse m_lighthouse;
 	glm::vec2 m_cursor_pos{};
-	int m_wave_count{};
+	std::size_t m_wave_count{};
 	bool m_running{true};
 	kvf::Seconds m_wave_interval{};
 	kvf::Seconds m_time_since_last_wave_spawn{};
