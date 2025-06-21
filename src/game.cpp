@@ -43,7 +43,7 @@ void Game::spawn_wave() {
 	std::vector<Enemy> new_wave;
 	std::size_t const wave_size = m_wave_count * 3;
 	new_wave.reserve(wave_size);
-	for (int i = 0; i < wave_size; ++i) { new_wave.emplace_back(m_services, glm::vec2{0.0f, 0.0f}, util::random_range(35.0f, 65.0f)); }
+	for (std::size_t i = 0; i < wave_size; ++i) { new_wave.emplace_back(m_services, glm::vec2{0.0f, 0.0f}, util::random_range(35.0f, 65.0f)); }
 	m_enemies.insert(m_enemies.end(), std::make_move_iterator(new_wave.begin()), std::make_move_iterator(new_wave.end()));
 }
 
