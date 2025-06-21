@@ -2,9 +2,9 @@
 #include <glm/ext/vector_float2.hpp>
 #include <klib/assert.hpp>
 #include <klib/concepts.hpp>
+#include <cmath>
 #include <numbers>
 #include <random>
-
 namespace miracle::util {
 /// \brief Wrapper that reuses the same random engine for all calls.
 class Random {

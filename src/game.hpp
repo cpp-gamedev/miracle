@@ -18,6 +18,7 @@ class Game {
 	void tick(kvf::Seconds dt);
 	void render(le::Renderer& renderer) const;
 	void spawn_wave();
+
   private:
 	gsl::not_null<le::ServiceLocator const*> m_services;
 
