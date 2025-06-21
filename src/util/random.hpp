@@ -37,7 +37,7 @@ template <klib::NumberT Type>
 	return Random::in_range(0uz, size - 1);
 }
 // Returns a random coordinate on the specified radius
-[[nodiscard]] static auto get_random_location_on_radius(float radius) -> glm::vec2 {
+[[nodiscard]] inline auto get_random_location_on_radius(float radius) -> glm::vec2 {
 	float const angle = random_range(0.0f, 2.0f * std::numbers::pi_v<float>);
 	return {radius * std::cos(angle), radius * std::sin(angle)};
 }
