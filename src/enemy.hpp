@@ -7,13 +7,14 @@
 #include <le2d/renderer.hpp>
 #include <le2d/service_locator.hpp>
 #include <optional>
+#include "enemy_params.hpp"
 #include "glm/ext/vector_float2.hpp"
 #include "le2d/texture.hpp"
 
 namespace miracle {
 class Enemy {
   public:
-	explicit Enemy(gsl::not_null<le::ServiceLocator const*> services, glm::vec2 target_pos, float move_speed);
+	explicit Enemy(gsl::not_null<le::ServiceLocator const*> services, EnemyParams const& params);
 
 	void render(le::Renderer& renderer) const;
 	void translate(kvf::Seconds dt);

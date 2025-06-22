@@ -1,10 +1,10 @@
 #include <game.hpp>
 #include <glm/gtx/norm.hpp>
 #include <le2d/context.hpp>
-#include <algorithm>
 #include <cstddef>
 #include <vector>
 #include "enemy.hpp"
+#include "enemy_params.hpp"
 #include "kvf/time.hpp"
 #include "lighhouse.hpp"
 #include "util/random.hpp"
@@ -48,7 +48,9 @@ void Game::spawn_wave() {
 	std::vector<Enemy> new_wave;
 	std::size_t const wave_size = m_wave_count * 3;
 	new_wave.reserve(wave_size);
-	for (std::size_t i = 0; i < wave_size; ++i) { new_wave.emplace_back(m_services, glm::vec2{0.0f, 0.0f}, util::random_range(35.0f, 65.0f)); }
+	for (std::size_t i = 0; i < wave_size; ++i) {
+		new_wave.emplace_back(m_services, EnemyParams{.target_pos = glm::vec2{0.0f, 0.0f}, .move_speed = util::random_range(35.0f, 65.0f)});
+	}
 	m_enemies.insert(m_enemies.end(), std::make_move_iterator(new_wave.begin()), std::make_move_iterator(new_wave.end()));
 }
 } // namespace miracle
