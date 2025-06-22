@@ -1,8 +1,8 @@
 #include <enemy.hpp>
 #include <algorithm>
 #include "enemy_params.hpp"
-#include "glm/ext/vector_float2.hpp"
 #include "glm/geometric.hpp"
+#include "glm/vec2.hpp"
 #include "kvf/color.hpp"
 #include "util/random.hpp"
 

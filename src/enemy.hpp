@@ -8,7 +8,7 @@
 #include <le2d/service_locator.hpp>
 #include <optional>
 #include "enemy_params.hpp"
-#include "glm/ext/vector_float2.hpp"
+#include "glm/vec2.hpp"
 #include "le2d/texture.hpp"
 
 namespace miracle {
