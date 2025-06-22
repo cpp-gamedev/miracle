@@ -4,6 +4,7 @@
 #include <game.hpp>
 #include <klib/visitor.hpp>
 #include <log.hpp>
+#include <util/random.hpp>
 
 namespace miracle {
 namespace {
@@ -18,6 +19,7 @@ App::App() : m_context(context_ci), m_data_loader(le::FileDataLoader::upfind("as
 	// test code, remove later.
 	auto json = dj::Json{};
 	if (m_services.get<le::IDataLoader>().load_json(json, "test_file.json")) { log.info("loaded JSON: {}", json); }
+	log.debug("random_range(1, 100): {}", util::random_range(1, 100));
 }
 
 void App::run() {
