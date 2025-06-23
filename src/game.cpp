@@ -10,10 +10,7 @@
 #include "util/random.hpp"
 
 namespace miracle {
-Game::Game(gsl::not_null<le::ServiceLocator const*> services) : m_services(services), m_lighthouse(services) {
-	m_circle.create(70.0f);
-	spawn_wave();
-}
+Game::Game(gsl::not_null<le::ServiceLocator const*> services) : m_services(services), m_lighthouse(services), m_light(services) { spawn_wave(); }
 
 void Game::on_cursor_pos(le::event::CursorPos const& cursor_pos) {
 	auto const framebuffer_size = m_services->get<le::Context>().framebuffer_size();
@@ -28,16 +25,16 @@ void Game::tick([[maybe_unused]] kvf::Seconds const dt) {
 		m_time_since_last_wave_spawn = kvf::Seconds{};
 	}
 	for (auto& enemy : m_enemies) {
-		enemy.check_collision(m_circle.transform.position, 50.0f);
+		 m_light.check_enemy_collision(enemy);
 		enemy.translate(dt);
 	}
 	std::erase_if(m_enemies, [](Enemy const& enemy) { return !enemy.get_health(); });
-	m_circle.transform.position = m_cursor_pos;
+	m_light.set_position(m_cursor_pos);
 	m_lighthouse.rotate_towards_cursor(m_cursor_pos);
 }
 
 void Game::render(le::Renderer& renderer) const {
-	m_circle.draw(renderer);
+	m_light.render(renderer);
 	m_lighthouse.render(renderer);
 	for (auto const& enemy : m_enemies) { enemy.render(renderer); }
 }

@@ -7,6 +7,7 @@
 #include <cstddef>
 #include "enemy.hpp"
 #include "lighhouse.hpp"
+#include "light.hpp"
 
 namespace miracle {
 class Game {
@@ -22,7 +23,7 @@ class Game {
   private:
 	gsl::not_null<le::ServiceLocator const*> m_services;
 
-	le::drawable::Circle m_circle{};
+	Light m_light;
 	Lighthouse m_lighthouse;
 	glm::vec2 m_cursor_pos{};
 	std::size_t m_wave_count{};
