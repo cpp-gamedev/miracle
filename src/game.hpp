@@ -6,6 +6,8 @@
 #include <le2d/service_locator.hpp>
 #include <cstddef>
 #include "enemy.hpp"
+#include "le2d/drawable/text.hpp"
+#include "le2d/font.hpp"
 #include "lighhouse.hpp"
 #include "light.hpp"
 
@@ -18,11 +20,15 @@ class Game {
 
 	void tick(kvf::Seconds dt);
 	void render(le::Renderer& renderer) const;
+	void increase_score(std::size_t points);
+	[[nodiscard]] std::string get_score_string() const;
 	void spawn_wave();
 
   private:
 	gsl::not_null<le::ServiceLocator const*> m_services;
 
+	le::Font m_font{};
+	le::drawable::Text m_score_text{};
 	Light m_light;
 	Lighthouse m_lighthouse;
 	glm::vec2 m_cursor_pos{};
@@ -31,5 +37,6 @@ class Game {
 	kvf::Seconds m_wave_interval{};
 	kvf::Seconds m_time_since_last_wave_spawn{};
 	std::vector<Enemy> m_enemies{};
+	std::size_t m_score{};
 };
 } // namespace miracle
