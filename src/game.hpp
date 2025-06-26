@@ -21,7 +21,7 @@ class Game {
 	void tick(kvf::Seconds dt);
 	void render(le::Renderer& renderer) const;
 	void increase_score(std::size_t points);
-	[[nodiscard]] std::string get_score_string() const;
+	void set_health_text();
 	void spawn_wave();
 
   private:
@@ -31,6 +31,8 @@ class Game {
 
 	le::Font m_font{};
 	le::drawable::Text m_score_text{};
+	le::drawable::Text m_health_text{};
+
 	glm::vec2 m_cursor_pos{};
 	std::size_t m_wave_count{};
 	bool m_running{true};

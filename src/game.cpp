@@ -6,6 +6,7 @@
 #include <vector>
 #include "enemy.hpp"
 #include "enemy_params.hpp"
+#include "glm/ext/vector_float2.hpp"
 #include "kvf/time.hpp"
 #include "le2d/asset_loader.hpp"
 #include "le2d/data_loader.hpp"
@@ -22,8 +23,9 @@ Game::Game(gsl::not_null<le::ServiceLocator const*> services)
 	auto const asset_loader = le::AssetLoader{&data_loader, &context};
 	m_font = asset_loader.load_font("fonts/specialElite.ttf");
 	auto const framebuffer_size = m_services->get<le::Context>().framebuffer_size();
-
-	m_score_text.transform.position.y = static_cast<float>(framebuffer_size.y) / 2.0f - 50.0f;
+	auto const y = (static_cast<float>(framebuffer_size.y) / 2.0f) - 50.0f;
+	m_score_text.transform.position.y = y;
+	m_health_text.transform.position = glm::vec2{(static_cast<float>(framebuffer_size.y) / 2.0f) - 50.0f, y};
 }
 
 void Game::on_cursor_pos(le::event::CursorPos const& cursor_pos) {
@@ -32,7 +34,9 @@ void Game::on_cursor_pos(le::event::CursorPos const& cursor_pos) {
 }
 
 void Game::tick([[maybe_unused]] kvf::Seconds const dt) {
+	m_running = m_lighthouse.get_health() > 0;
 	if (!m_running) { return; }
+
 	m_time_since_last_wave_spawn += dt;
 	if (m_time_since_last_wave_spawn >= m_wave_interval) {
 		spawn_wave();
@@ -40,11 +44,14 @@ void Game::tick([[maybe_unused]] kvf::Seconds const dt) {
 	}
 	for (auto& enemy : m_enemies) {
 		m_light.check_enemy_collision(enemy);
+		m_lighthouse.check_visibility_range(enemy);
+		set_health_text();
 		enemy.translate(dt);
 	}
 	// Keep track of how many enemies were defeated and calculate score
 	auto res = std::erase_if(m_enemies, [](Enemy const& enemy) { return !enemy.get_health(); });
 	increase_score(res * 10);
+
 	m_light.set_position(m_cursor_pos);
 	m_lighthouse.rotate_towards_cursor(m_cursor_pos);
 }
@@ -54,6 +61,7 @@ void Game::render(le::Renderer& renderer) const {
 	m_lighthouse.render(renderer);
 	for (auto const& enemy : m_enemies) { enemy.render(renderer); }
 	m_score_text.draw(renderer);
+	m_health_text.draw(renderer);
 }
 
 void Game::spawn_wave() {
@@ -72,4 +80,11 @@ void Game::increase_score(std::size_t points) {
 	m_score += points;
 	m_score_text.set_string(m_font, "Score: " + std::to_string(m_score));
 }
+
+void Game::set_health_text() {
+	float const health = m_lighthouse.get_health();
+	std::string text = health > 0 ? "Health: " + std::format("{:.1f}", health) : "Game Over";
+	m_health_text.set_string(m_font, text);
+}
+
 } // namespace miracle

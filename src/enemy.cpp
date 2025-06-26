@@ -19,7 +19,7 @@ Enemy::Enemy(gsl::not_null<le::ServiceLocator const*> services, EnemyParams cons
 }
 
 void Enemy::render(le::Renderer& renderer) const {
-	if (m_can_render) { m_sprite.draw(renderer); }
+	if (can_render) { m_sprite.draw(renderer); }
 }
 
 void Enemy::translate(kvf::Seconds const dt) {
@@ -30,7 +30,7 @@ void Enemy::translate(kvf::Seconds const dt) {
 
 std::pair<glm::vec2, float> Enemy::get_pos_diameter() const { return {m_sprite.transform.position, m_diameter}; }
 void Enemy::take_damage(std::size_t dmg) {
-	m_can_render = true;
+	can_render = true;
 	m_health = (dmg >= m_health) ? 0 : (m_health - dmg);
 }
 
