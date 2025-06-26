@@ -26,11 +26,11 @@ class Game {
 
   private:
 	gsl::not_null<le::ServiceLocator const*> m_services;
+	Lighthouse m_lighthouse;
+	Light m_light;
 
 	le::Font m_font{};
 	le::drawable::Text m_score_text{};
-	Light m_light;
-	Lighthouse m_lighthouse;
 	glm::vec2 m_cursor_pos{};
 	std::size_t m_wave_count{};
 	bool m_running{true};
