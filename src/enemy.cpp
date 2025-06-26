@@ -31,7 +31,7 @@ void Enemy::translate(kvf::Seconds const dt) {
 std::pair<glm::vec2, float> Enemy::get_pos_diameter() const { return {m_sprite.transform.position, m_diameter}; }
 void Enemy::take_damage(std::size_t dmg) {
 	m_can_render = true;
-	m_health = m_health = (dmg >= m_health) ? 0 : (m_health - dmg);
+	m_health = (dmg >= m_health) ? 0 : (m_health - dmg);
 }
 
 } // namespace miracle
