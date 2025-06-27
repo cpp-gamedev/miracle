@@ -17,7 +17,9 @@ Enemy::Enemy(gsl::not_null<le::ServiceLocator const*> services, EnemyParams cons
 	// TODO: add proper textures
 }
 
-void Enemy::render(le::Renderer& renderer) const { m_sprite.draw(renderer); }
+void Enemy::render(le::Renderer& renderer) const {
+	if (m_can_render) { m_sprite.draw(renderer); }
+}
 
 void Enemy::translate(kvf::Seconds const dt) {
 	glm::vec2 const direction = glm::normalize(m_target_pos - m_sprite.transform.position);
@@ -25,8 +27,10 @@ void Enemy::translate(kvf::Seconds const dt) {
 	m_sprite.transform.position += movement;
 }
 
-void Enemy::check_collision(glm::vec2 pos, float radius) {
-	if (glm::distance(pos, m_sprite.transform.position) < radius + m_diameter / 2) { m_health = 0; }
+CollisionParams Enemy::get_collision_params() const { return {.pos = m_sprite.transform.position, .diameter = m_diameter}; }
+void Enemy::take_damage(std::size_t dmg) {
+	m_can_render = true;
+	m_health = (dmg >= m_health) ? 0 : (m_health - dmg);
 }
 
 } // namespace miracle

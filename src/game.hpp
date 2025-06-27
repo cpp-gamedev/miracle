@@ -6,7 +6,10 @@
 #include <le2d/service_locator.hpp>
 #include <cstddef>
 #include "enemy.hpp"
+#include "le2d/drawable/text.hpp"
+#include "le2d/font.hpp"
 #include "lighhouse.hpp"
+#include "light.hpp"
 
 namespace miracle {
 class Game {
@@ -17,13 +20,19 @@ class Game {
 
 	void tick(kvf::Seconds dt);
 	void render(le::Renderer& renderer) const;
+	void update_score(int points);
 	void spawn_wave();
 
   private:
 	gsl::not_null<le::ServiceLocator const*> m_services;
-
-	le::drawable::Circle m_circle{};
 	Lighthouse m_lighthouse;
+	Light m_light;
+
+	le::Font m_font{};
+	le::drawable::Text m_score_text{};
+	int m_score{};
+	std::string m_score_str;
+
 	glm::vec2 m_cursor_pos{};
 	std::size_t m_wave_count{};
 	bool m_running{true};

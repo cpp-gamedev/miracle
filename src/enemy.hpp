@@ -6,7 +6,9 @@
 #include <le2d/event.hpp>
 #include <le2d/renderer.hpp>
 #include <le2d/service_locator.hpp>
+#include <cstddef>
 #include <optional>
+#include "EnemyColliderInfo.hpp"
 #include "enemy_params.hpp"
 #include "glm/vec2.hpp"
 #include "le2d/texture.hpp"
@@ -18,9 +20,10 @@ class Enemy {
 
 	void render(le::Renderer& renderer) const;
 	void translate(kvf::Seconds dt);
-	// There are temporary parameters, will take the light beam object once it is created
-	void check_collision(glm::vec2 pos, float radius);
+	void take_damage(std::size_t dmg);
 	[[nodiscard]] std::size_t get_health() const { return m_health; }
+	[[nodiscard]] CollisionParams get_collision_params() const;
+	bool m_can_render{false};
 
   private:
 	gsl::not_null<le::ServiceLocator const*> m_services;
