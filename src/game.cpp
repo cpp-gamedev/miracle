@@ -42,7 +42,7 @@ void Game::tick([[maybe_unused]] kvf::Seconds const dt) {
 	}
 	// Keep track of how many enemies were defeated and calculate score
 	auto res = std::erase_if(m_enemies, [](Enemy const& enemy) { return !enemy.get_health(); });
-	update_score(res * 10);
+	update_score(static_cast<int>(res * 10));
 	m_light.set_position(m_cursor_pos);
 	m_lighthouse.rotate_towards_cursor(m_cursor_pos);
 }

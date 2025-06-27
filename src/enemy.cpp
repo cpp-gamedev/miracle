@@ -1,6 +1,5 @@
 #include <enemy.hpp>
 #include <algorithm>
-#include <utility>
 #include "enemy_params.hpp"
 #include "glm/geometric.hpp"
 #include "glm/vec2.hpp"
