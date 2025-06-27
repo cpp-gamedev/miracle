@@ -20,8 +20,7 @@ class Game {
 
 	void tick(kvf::Seconds dt);
 	void render(le::Renderer& renderer) const;
-	void increase_score(std::size_t points);
-	[[nodiscard]] std::string get_score_string() const;
+	void update_score(int points);
 	void spawn_wave();
 
   private:
@@ -31,12 +30,14 @@ class Game {
 
 	le::Font m_font{};
 	le::drawable::Text m_score_text{};
+	int m_score{};
+	std::string m_score_str;
+
 	glm::vec2 m_cursor_pos{};
 	std::size_t m_wave_count{};
 	bool m_running{true};
 	kvf::Seconds m_wave_interval{};
 	kvf::Seconds m_time_since_last_wave_spawn{};
 	std::vector<Enemy> m_enemies{};
-	std::size_t m_score{};
 };
 } // namespace miracle

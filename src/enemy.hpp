@@ -8,6 +8,7 @@
 #include <le2d/service_locator.hpp>
 #include <cstddef>
 #include <optional>
+#include "EnemyColliderInfo.hpp"
 #include "enemy_params.hpp"
 #include "glm/vec2.hpp"
 #include "le2d/texture.hpp"
@@ -21,7 +22,7 @@ class Enemy {
 	void translate(kvf::Seconds dt);
 	void take_damage(std::size_t dmg);
 	[[nodiscard]] std::size_t get_health() const { return m_health; }
-	[[nodiscard]] std::pair<glm::vec2, float> get_pos_diameter() const;
+	[[nodiscard]] CollisionParams get_collision_params() const;
 	bool m_can_render{false};
 
   private:
