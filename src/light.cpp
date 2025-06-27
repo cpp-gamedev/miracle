@@ -5,8 +5,8 @@ namespace miracle {
 Light::Light(gsl::not_null<le::ServiceLocator const*> services) : m_services(services), m_diameter(100) { m_sprite.create(150.0f, kvf::white_v); }
 
 void Light::check_enemy_collision(Enemy& enemy) {
-	auto [pos, diameter] = enemy.get_pos_diameter();
-	if (glm::distance(pos, m_sprite.transform.position) < (diameter + m_diameter)) {
+	auto const [pos, diameter] = enemy.get_collision_params();
+	if (glm::distance(pos, m_sprite.transform.position) < (diameter + m_diameter) / 2) {
 		enemy.take_damage(1);
 	} else {
 		enemy.can_render = false;

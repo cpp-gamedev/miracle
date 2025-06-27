@@ -1,5 +1,4 @@
 #include <lighhouse.hpp>
-#include <cstddef>
 #include "glm/geometric.hpp"
 #include "le2d/asset_loader.hpp"
 #include "le2d/data_loader.hpp"
@@ -26,7 +25,7 @@ void Lighthouse::rotate_towards_cursor(glm::vec2 cursor_pos) {
 	}
 }
 void Lighthouse::check_visibility_range(Enemy& enemy) {
-	auto [enemy_pos, enemy_diameter] = enemy.get_pos_diameter();
+	auto [enemy_pos, enemy_diameter] = enemy.get_collision_params();
 	if (glm::distance(m_sprite.transform.position, enemy_pos) < (m_visibility_diameter + enemy_diameter) / 2.0f) {
 		enemy.can_render = true;
 		// No need to check for damage taken if enemy isn't already in visibility radius
@@ -34,7 +33,7 @@ void Lighthouse::check_visibility_range(Enemy& enemy) {
 	}
 }
 void Lighthouse::check_damage_taken(Enemy& enemy) {
-	auto [enemy_pos, enemy_diameter] = enemy.get_pos_diameter();
+	auto [enemy_pos, enemy_diameter] = enemy.get_collision_params();
 	if (glm::distance(m_sprite.transform.position, enemy_pos) < (m_hitbog_diameter + enemy_diameter) / 2.0f) {
 		take_damage(enemy_diameter / 200);
 	} // magic numbers
