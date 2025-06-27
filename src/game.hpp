@@ -34,7 +34,7 @@ class Game {
 	le::drawable::Text m_health_text{};
 	int m_score{};
 	std::string m_score_str;
-
+	std::string m_health_str;
 	glm::vec2 m_cursor_pos{};
 	std::size_t m_wave_count{};
 	bool m_running{true};

@@ -23,10 +23,6 @@ Game::Game(gsl::not_null<le::ServiceLocator const*> services) : m_services(servi
 	auto const& context = services->get<le::Context>();
 	auto const asset_loader = le::AssetLoader{&data_loader, &context};
 	m_font = asset_loader.load_font("fonts/specialElite.ttf");
-	auto const framebuffer_size = m_services->get<le::Context>().framebuffer_size();
-	auto const y = (static_cast<float>(framebuffer_size.y) / 2.0f) - 50.0f;
-	m_score_text.transform.position.y = y;
-	m_health_text.transform.position = glm::vec2{(static_cast<float>(framebuffer_size.y) / 2.0f) - 50.0f, y};
 }
 
 void Game::on_cursor_pos(le::event::CursorPos const& cursor_pos) {
@@ -77,13 +73,28 @@ void Game::spawn_wave() {
 }
 
 void Game::update_score(int points) {
-	auto const framebuffer_size = m_services->get<le::Context>().framebuffer_size();
+	auto const& framebuffer_size = m_services->get<le::Context>().framebuffer_size();
 	m_score_text.transform.position.y = static_cast<float>(framebuffer_size.y) / 2.0f - 50.0f;
 	m_score += points;
 	m_score_str.clear();
 	std::format_to(std::back_inserter(m_score_str), "Score: {}", m_score);
 	m_score_text.set_string(m_font, m_score_str);
 }
-void Game::update_health_text() {}
+
+void Game::update_health_text() {
+	auto const& framebuffer_size = m_services->get<le::Context>().framebuffer_size();
+	float const x = (static_cast<float>(framebuffer_size.x) * 0.5f) - 150.0f;
+	float const y = (static_cast<float>(framebuffer_size.y) * 0.5f) - 50.0f;
+	m_health_text.transform.position = {x, y};
+
+	m_health_str.clear();
+	if (m_lighthouse.get_health() <= 0.0f) {
+		std::format_to(std::back_inserter(m_health_str), "Game Over");
+	} else {
+		std::format_to(std::back_inserter(m_health_str), "Health: {:.1f}", m_lighthouse.get_health());
+	}
+
+	m_health_text.set_string(m_font, m_health_str);
+}
 
 } // namespace miracle
