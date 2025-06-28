@@ -73,7 +73,7 @@ void Game::spawn_wave() {
 }
 
 void Game::update_score(int points) {
-	auto const& framebuffer_size = m_services->get<le::Context>().framebuffer_size();
+	auto const framebuffer_size = m_services->get<le::Context>().framebuffer_size();
 	m_score_text.transform.position.y = static_cast<float>(framebuffer_size.y) / 2.0f - 50.0f;
 	m_score += points;
 	m_score_str.clear();
@@ -82,7 +82,7 @@ void Game::update_score(int points) {
 }
 
 void Game::update_health_text() {
-	auto const& framebuffer_size = m_services->get<le::Context>().framebuffer_size();
+	auto const framebuffer_size = m_services->get<le::Context>().framebuffer_size();
 	float const x = (static_cast<float>(framebuffer_size.x) * 0.5f) - 150.0f;
 	float const y = (static_cast<float>(framebuffer_size.y) * 0.5f) - 50.0f;
 	m_health_text.transform.position = {x, y};

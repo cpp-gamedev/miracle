@@ -25,7 +25,7 @@ class Lighthouse {
 
   private:
 	gsl::not_null<le::ServiceLocator const*> m_services;
-	float m_hitbog_diameter{150.0f};
+	float m_hitbox_diameter{150.0f};
 	float m_visibility_diameter{250.0f};
 	std::optional<le::Texture> m_texture;
 	le::drawable::Circle m_sprite{};

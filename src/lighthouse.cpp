@@ -5,7 +5,7 @@
 
 namespace miracle {
 Lighthouse::Lighthouse(gsl::not_null<le::ServiceLocator const*> services) : m_services(services) {
-	m_sprite.create(m_hitbog_diameter);
+	m_sprite.create(m_hitbox_diameter);
 	auto const& data_loader = services->get<le::IDataLoader>();
 	auto const& context = services->get<le::Context>();
 	auto const asset_loader = le::AssetLoader{&data_loader, &context};
@@ -34,7 +34,7 @@ void Lighthouse::check_visibility_range(Enemy& enemy) {
 }
 void Lighthouse::check_damage_taken(Enemy& enemy) {
 	auto [enemy_pos, enemy_diameter] = enemy.get_collision_params();
-	if (glm::distance(m_sprite.transform.position, enemy_pos) < (m_hitbog_diameter + enemy_diameter) / 2.0f) {
+	if (glm::distance(m_sprite.transform.position, enemy_pos) < (m_hitbox_diameter + enemy_diameter) / 2.0f) {
 		take_damage(enemy_diameter / 200);
 	} // magic numbers
 }
