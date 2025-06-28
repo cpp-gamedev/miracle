@@ -8,6 +8,7 @@
 #include <vector>
 #include "enemy.hpp"
 #include "enemy_params.hpp"
+#include "glm/ext/vector_float2.hpp"
 #include "kvf/time.hpp"
 #include "le2d/asset_loader.hpp"
 #include "le2d/data_loader.hpp"
@@ -30,7 +31,9 @@ void Game::on_cursor_pos(le::event::CursorPos const& cursor_pos) {
 }
 
 void Game::tick([[maybe_unused]] kvf::Seconds const dt) {
+	m_running = m_lighthouse.get_health() > 0;
 	if (!m_running) { return; }
+
 	m_time_since_last_wave_spawn += dt;
 	if (m_time_since_last_wave_spawn >= m_wave_interval) {
 		spawn_wave();
@@ -38,6 +41,8 @@ void Game::tick([[maybe_unused]] kvf::Seconds const dt) {
 	}
 	for (auto& enemy : m_enemies) {
 		m_light.check_enemy_collision(enemy);
+		m_lighthouse.check_visibility_range(enemy);
+		update_health_text();
 		enemy.translate(dt);
 	}
 	// Keep track of how many enemies were defeated and calculate score
@@ -52,6 +57,7 @@ void Game::render(le::Renderer& renderer) const {
 	m_lighthouse.render(renderer);
 	for (auto const& enemy : m_enemies) { enemy.render(renderer); }
 	m_score_text.draw(renderer);
+	m_health_text.draw(renderer);
 }
 
 void Game::spawn_wave() {
@@ -74,4 +80,21 @@ void Game::update_score(int points) {
 	std::format_to(std::back_inserter(m_score_str), "Score: {}", m_score);
 	m_score_text.set_string(m_font, m_score_str);
 }
+
+void Game::update_health_text() {
+	auto const framebuffer_size = m_services->get<le::Context>().framebuffer_size();
+	float const x = (static_cast<float>(framebuffer_size.x) * 0.5f) - 150.0f;
+	float const y = (static_cast<float>(framebuffer_size.y) * 0.5f) - 50.0f;
+	m_health_text.transform.position = {x, y};
+
+	m_health_str.clear();
+	if (m_lighthouse.get_health() <= 0.0f) {
+		std::format_to(std::back_inserter(m_health_str), "Game Over");
+	} else {
+		std::format_to(std::back_inserter(m_health_str), "Health: {:.1f}", m_lighthouse.get_health());
+	}
+
+	m_health_text.set_string(m_font, m_health_str);
+}
+
 } // namespace miracle

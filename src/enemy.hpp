@@ -23,7 +23,7 @@ class Enemy {
 	void take_damage(std::size_t dmg);
 	[[nodiscard]] std::size_t get_health() const { return m_health; }
 	[[nodiscard]] CollisionParams get_collision_params() const;
-	bool m_can_render{false};
+	bool can_render{false};
 
   private:
 	gsl::not_null<le::ServiceLocator const*> m_services;

@@ -9,7 +9,7 @@ void Light::check_enemy_collision(Enemy& enemy) {
 	if (glm::distance(pos, m_sprite.transform.position) < (diameter + m_diameter) / 2) {
 		enemy.take_damage(1);
 	} else {
-		enemy.m_can_render = false;
+		enemy.can_render = false;
 	}
 }
 void Light::render(le::Renderer& renderer) const { m_sprite.draw(renderer); }
