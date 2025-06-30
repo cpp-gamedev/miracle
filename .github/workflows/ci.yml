@@ -74,7 +74,7 @@ jobs:
       - name: test release
         run: cd build && ctest -V -C Release
   x64-windows-vs22:
-    runs-on: windows-latest
+    runs-on: windows-2025
     steps:
       - uses: actions/checkout@v4
       - name: configure
@@ -88,11 +88,9 @@ jobs:
       - name: test release
         run: cd build && ctest -V -C Release
   x64-windows-clang:
-    runs-on: windows-latest
+    runs-on: windows-2025
     steps:
       - uses: actions/checkout@v4
-      - name: init
-        run: choco install ninja
       - name: configure
         run: cmake -S . --preset=ninja-clang -B build -DKVF_USE_FREETYPE=OFF
       - name: build debug
