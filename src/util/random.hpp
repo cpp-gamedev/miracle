@@ -1,8 +1,10 @@
 #pragma once
+#include <glm/ext/vector_float2.hpp>
 #include <klib/assert.hpp>
 #include <klib/concepts.hpp>
+#include <cmath>
+#include <numbers>
 #include <random>
-
 namespace miracle::util {
 /// \brief Wrapper that reuses the same random engine for all calls.
 class Random {
@@ -33,5 +35,10 @@ template <klib::NumberT Type>
 [[nodiscard]] inline auto random_index(std::size_t const size) -> std::size_t {
 	KLIB_ASSERT(size > 0);
 	return Random::in_range(0uz, size - 1);
+}
+// Returns a random coordinate on the specified radius
+[[nodiscard]] inline auto get_random_location_on_radius(float radius) -> glm::vec2 {
+	float const angle = random_range(0.0f, 2.0f * std::numbers::pi_v<float>);
+	return {radius * std::cos(angle), radius * std::sin(angle)};
 }
 } // namespace miracle::util
