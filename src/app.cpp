@@ -4,23 +4,17 @@
 #include <game.hpp>
 #include <klib/visitor.hpp>
 #include <log.hpp>
-#include <util/random.hpp>
 
 namespace miracle {
 namespace {
+constexpr auto window_size = glm::ivec2{800, 800};
+constexpr auto window_flags = le::default_window_flags_v & ~le::WindowFlag::Resizeable;
 constexpr auto context_ci = le::Context::CreateInfo{
-	.window = le::WindowInfo{.size = {1280, 720}, .title = "miracle"},
+	.window = le::WindowInfo{.size = window_size, .title = "miracle", .flags = window_flags},
 };
 } // namespace
 
-App::App() : m_context(context_ci), m_data_loader(le::FileDataLoader::upfind("assets")) {
-	bind_services();
-
-	// test code, remove later.
-	auto json = dj::Json{};
-	if (m_services.get<le::IDataLoader>().load_json(json, "test_file.json")) { log.info("loaded JSON: {}", json); }
-	log.debug("random_range(1, 100): {}", util::random_range(1, 100));
-}
+App::App() : m_context(context_ci), m_data_loader(le::FileDataLoader::upfind("assets")) { bind_services(); }
 
 void App::run() {
 	auto game = Game{&m_services};
