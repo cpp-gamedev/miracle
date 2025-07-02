@@ -8,21 +8,29 @@
 #include <le2d/service_locator.hpp>
 #include <cstddef>
 #include <optional>
-#include "EnemyColliderInfo.hpp"
-#include "enemy_params.hpp"
 #include "glm/vec2.hpp"
 #include "le2d/texture.hpp"
 
 namespace miracle {
 class Enemy {
   public:
-	explicit Enemy(gsl::not_null<le::ServiceLocator const*> services, EnemyParams const& params);
+	struct Params {
+		glm::vec2 target_pos{};
+		float move_speed{};
+	};
+
+	struct CollisionInfo {
+		glm::vec2 pos{};
+		float diameter{};
+	};
+
+	explicit Enemy(gsl::not_null<le::ServiceLocator const*> services, Params const& params);
 
 	void render(le::Renderer& renderer) const;
 	void translate(kvf::Seconds dt);
 	void take_damage(std::size_t dmg);
 	[[nodiscard]] std::size_t get_health() const { return m_health; }
-	[[nodiscard]] CollisionParams get_collision_params() const;
+	[[nodiscard]] CollisionInfo get_collision_info() const;
 	bool can_render{false};
 
   private:
