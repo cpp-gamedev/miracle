@@ -1,5 +1,5 @@
 #include <glm/gtc/matrix_transform.hpp>
-#include <lighhouse.hpp>
+#include <lighthouse.hpp>
 #include "glm/gtx/norm.hpp"
 #include "le2d/asset_loader.hpp"
 #include "le2d/data_loader.hpp"

@@ -8,8 +8,8 @@
 #include "enemy.hpp"
 #include "le2d/drawable/text.hpp"
 #include "le2d/font.hpp"
-#include "lighhouse.hpp"
 #include "light.hpp"
+#include "lighthouse.hpp"
 
 namespace miracle {
 class Game {
