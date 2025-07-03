@@ -1,19 +1,18 @@
 #include <game.hpp>
 #include <glm/gtx/norm.hpp>
 #include <le2d/context.hpp>
+#include <algorithm>
 #include <cstddef>
 #include <format>
 #include <iterator>
 #include <string>
 #include <vector>
 #include "enemy.hpp"
-#include "enemy_params.hpp"
-#include "glm/ext/vector_float2.hpp"
 #include "kvf/time.hpp"
 #include "le2d/asset_loader.hpp"
 #include "le2d/data_loader.hpp"
 #include "le2d/drawable/text.hpp"
-#include "lighhouse.hpp"
+#include "lighthouse.hpp"
 #include "util/random.hpp"
 
 namespace miracle {
@@ -63,13 +62,15 @@ void Game::render(le::Renderer& renderer) const {
 void Game::spawn_wave() {
 	++m_wave_count;
 	m_wave_interval += kvf::Seconds{5};
-	std::vector<Enemy> new_wave;
-	std::size_t const wave_size = m_wave_count * 3;
-	new_wave.reserve(wave_size);
-	for (std::size_t i = 0; i < wave_size; ++i) {
-		new_wave.emplace_back(m_services, EnemyParams{.target_pos = glm::vec2{0.0f, 0.0f}, .move_speed = util::random_range(35.0f, 65.0f)});
+	std::vector<Enemy> new_wave{};
+	int wave_size = m_wave_count * 3;
+	new_wave.reserve(static_cast<std::size_t>(wave_size));
+	for (; wave_size > 0; --wave_size) {
+		auto const params = Enemy::Params{.target_pos = glm::vec2{0.0f, 0.0f}, .move_speed = util::random_range(35.0f, 65.0f)};
+		new_wave.emplace_back(m_services, params);
 	}
-	m_enemies.insert(m_enemies.end(), std::make_move_iterator(new_wave.begin()), std::make_move_iterator(new_wave.end()));
+	m_enemies.reserve(m_enemies.size() + new_wave.size());
+	std::ranges::move(new_wave, std::back_inserter(m_enemies));
 }
 
 void Game::update_score(int points) {

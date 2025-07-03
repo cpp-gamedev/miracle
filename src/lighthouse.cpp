@@ -1,5 +1,6 @@
-#include <lighhouse.hpp>
-#include "glm/geometric.hpp"
+#include <glm/gtc/matrix_transform.hpp>
+#include <lighthouse.hpp>
+#include "glm/gtx/norm.hpp"
 #include "le2d/asset_loader.hpp"
 #include "le2d/data_loader.hpp"
 
@@ -24,23 +25,25 @@ void Lighthouse::rotate_towards_cursor(glm::vec2 cursor_pos) {
 		m_sprite.transform.orientation = cursor_pos.x > 0.0f ? -angle : angle;
 	}
 }
+
 void Lighthouse::check_visibility_range(Enemy& enemy) {
-	auto [enemy_pos, enemy_diameter] = enemy.get_collision_params();
-	if (glm::distance(m_sprite.transform.position, enemy_pos) < (m_visibility_diameter + enemy_diameter) / 2.0f) {
+	auto [enemy_pos, enemy_diameter] = enemy.get_collision_info();
+	auto const dist_sq = glm::length2(m_sprite.transform.position - enemy_pos);
+	auto const viz_dist = (m_visibility_diameter + enemy_diameter) * 0.5f;
+	if (dist_sq < viz_dist * viz_dist) {
 		enemy.can_render = true;
 		// No need to check for damage taken if enemy isn't already in visibility radius
-		check_damage_taken(enemy);
+		check_damage_taken(enemy_diameter, dist_sq);
 	}
 }
-void Lighthouse::check_damage_taken(Enemy& enemy) {
-	auto [enemy_pos, enemy_diameter] = enemy.get_collision_params();
-	if (glm::distance(m_sprite.transform.position, enemy_pos) < (m_hitbox_diameter + enemy_diameter) / 2.0f) {
-		take_damage(enemy_diameter / 200);
-	} // magic numbers
+void Lighthouse::check_damage_taken(float const enemy_diameter, float const dist_sq) {
+	auto const hitbox_dist = (m_hitbox_diameter + enemy_diameter) * 0.5f;
+	if (dist_sq < hitbox_dist * hitbox_dist) { take_damage(enemy_diameter * 0.005f); } // magic numbers
 }
 
 void Lighthouse::take_damage(float dmg) { m_health -= dmg; }
 
 float Lighthouse::get_health() const { return m_health; }
+
 void Lighthouse::render(le::Renderer& renderer) const { m_sprite.draw(renderer); }
 } // namespace miracle

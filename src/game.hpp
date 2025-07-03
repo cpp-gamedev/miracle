@@ -8,8 +8,8 @@
 #include "enemy.hpp"
 #include "le2d/drawable/text.hpp"
 #include "le2d/font.hpp"
-#include "lighhouse.hpp"
 #include "light.hpp"
+#include "lighthouse.hpp"
 
 namespace miracle {
 class Game {
@@ -36,7 +36,7 @@ class Game {
 	std::string m_score_str;
 	std::string m_health_str;
 	glm::vec2 m_cursor_pos{};
-	std::size_t m_wave_count{};
+	int m_wave_count{};
 	bool m_running{true};
 	kvf::Seconds m_wave_interval{};
 	kvf::Seconds m_time_since_last_wave_spawn{};

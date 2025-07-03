@@ -19,7 +19,7 @@ class Lighthouse {
 	void rotate_towards_cursor(glm::vec2 cursor_pos);
 	void render(le::Renderer& renderer) const;
 	void check_visibility_range(Enemy& enemy);
-	void check_damage_taken(Enemy& enemy);
+	void check_damage_taken(float enemy_diameter, float dist_sq);
 	void take_damage(float dmg);
 	[[nodiscard]] float get_health() const;
 
