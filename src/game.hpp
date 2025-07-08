@@ -4,10 +4,10 @@
 #include <le2d/event.hpp>
 #include <le2d/renderer.hpp>
 #include <le2d/service_locator.hpp>
-#include <cstddef>
+#include <memory>
 #include "enemy.hpp"
 #include "le2d/drawable/text.hpp"
-#include "le2d/font.hpp"
+#include "le2d/resource/font.hpp"
 #include "light.hpp"
 #include "lighthouse.hpp"
 
@@ -29,7 +29,7 @@ class Game {
 	Lighthouse m_lighthouse;
 	Light m_light;
 
-	le::Font m_font{};
+	std::unique_ptr<le::IFont> m_font{};
 	le::drawable::Text m_score_text{};
 	le::drawable::Text m_health_text{};
 	int m_score{};
