@@ -14,7 +14,9 @@ constexpr auto context_ci = le::Context::CreateInfo{
 };
 } // namespace
 
-App::App() : m_context(context_ci), m_data_loader(le::FileDataLoader::upfind("assets")) { bind_services(); }
+App::App() : m_context(context_ci), m_data_loader(le::FileDataLoader::upfind("assets")), m_asset_loader(m_context.create_asset_loader(&m_data_loader)) {
+	bind_services();
+}
 
 void App::run() {
 	auto game = Game{&m_services};
@@ -40,5 +42,7 @@ void App::bind_services() {
 	// m_data_loader is bound to both the interface and the concrete class for use through either type.
 	m_services.bind<le::IDataLoader>(&m_data_loader);
 	m_services.bind<le::FileDataLoader>(&m_data_loader);
+
+	m_services.bind(&m_asset_loader);
 }
 } // namespace miracle

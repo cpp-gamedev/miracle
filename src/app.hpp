@@ -15,6 +15,7 @@ class App {
 
 	le::Context m_context;
 	le::FileDataLoader m_data_loader{};
+	le::AssetLoader m_asset_loader{};
 
 	le::ServiceLocator m_services{};
 };
