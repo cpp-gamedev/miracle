@@ -1,6 +1,7 @@
 #include <game.hpp>
 #include <glm/gtx/norm.hpp>
 #include <le2d/context.hpp>
+#include <resources.hpp>
 #include <cstddef>
 #include <format>
 #include <iterator>
@@ -15,8 +16,8 @@
 namespace miracle {
 Game::Game(gsl::not_null<le::ServiceLocator const*> services) : m_services(services), m_lighthouse(services), m_light(services) {
 	spawn_wave();
-	auto const& asset_loader = services->get<le::AssetLoader>();
-	m_font = asset_loader.load<le::IFont>("fonts/specialElite.ttf");
+	auto& resources = services->get<Resources>();
+	m_font = resources.load<le::IFont>("fonts/specialElite.ttf");
 	if (!m_font) { throw std::runtime_error{"Failed to load font"}; }
 }
 
