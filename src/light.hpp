@@ -1,12 +1,11 @@
 #pragma once
 
 #include "enemy.hpp"
-#include "glm/vec2.hpp"
 #include "gsl/pointers"
 #include "le2d/drawable/shape.hpp"
 #include "le2d/renderer.hpp"
+#include "le2d/resource/texture.hpp"
 #include "le2d/service_locator.hpp"
-#include "le2d/texture.hpp"
 
 namespace miracle {
 class Light {
@@ -19,7 +18,7 @@ class Light {
 
   private:
 	gsl::not_null<le::ServiceLocator const*> m_services;
-	std::optional<le::Texture> m_texture;
+	std::unique_ptr<le::ITexture> m_texture;
 	le::drawable::Circle m_sprite{};
 	float m_diameter{};
 };

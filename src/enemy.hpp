@@ -7,9 +7,8 @@
 #include <le2d/renderer.hpp>
 #include <le2d/service_locator.hpp>
 #include <cstddef>
-#include <optional>
-#include "glm/vec2.hpp"
-#include "le2d/texture.hpp"
+#include <memory>
+#include "le2d/resource/texture.hpp"
 
 namespace miracle {
 class Enemy {
@@ -35,7 +34,7 @@ class Enemy {
 
   private:
 	gsl::not_null<le::ServiceLocator const*> m_services;
-	std::optional<le::Texture> m_texture;
+	std::unique_ptr<le::ITexture> m_texture;
 	le::drawable::Circle m_sprite{};
 	glm::vec2 m_target_pos{};
 	float m_move_speed{};

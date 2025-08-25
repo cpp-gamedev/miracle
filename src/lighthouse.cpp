@@ -1,17 +1,13 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <lighthouse.hpp>
 #include "glm/gtx/norm.hpp"
-#include "le2d/asset_loader.hpp"
-#include "le2d/data_loader.hpp"
 
 namespace miracle {
 Lighthouse::Lighthouse(gsl::not_null<le::ServiceLocator const*> services) : m_services(services) {
 	m_sprite.create(m_hitbox_diameter);
-	auto const& data_loader = services->get<le::IDataLoader>();
-	auto const& context = services->get<le::Context>();
-	auto const asset_loader = le::AssetLoader{&data_loader, &context};
-	m_texture = asset_loader.load_texture("images/lighthouse.png");
-	m_sprite.texture = &m_texture.value();
+	auto const& asset_loader = services->get<le::AssetLoader>();
+	m_texture = asset_loader.load<le::ITexture>("images/lighthouse.png");
+	m_sprite.texture = m_texture.get();
 }
 
 void Lighthouse::rotate_towards_cursor(glm::vec2 cursor_pos) {

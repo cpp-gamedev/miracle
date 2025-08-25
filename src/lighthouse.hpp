@@ -6,10 +6,9 @@
 #include <le2d/event.hpp>
 #include <le2d/renderer.hpp>
 #include <le2d/service_locator.hpp>
-#include <cstddef>
-#include <optional>
+#include <memory>
 #include "enemy.hpp"
-#include "le2d/texture.hpp"
+#include "le2d/resource/texture.hpp"
 
 namespace miracle {
 class Lighthouse {
@@ -27,7 +26,7 @@ class Lighthouse {
 	gsl::not_null<le::ServiceLocator const*> m_services;
 	float m_hitbox_diameter{150.0f};
 	float m_visibility_diameter{250.0f};
-	std::optional<le::Texture> m_texture;
+	std::unique_ptr<le::ITexture> m_texture;
 	le::drawable::Circle m_sprite{};
 	float m_health{100};
 };

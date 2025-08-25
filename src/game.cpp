@@ -1,7 +1,6 @@
 #include <game.hpp>
 #include <glm/gtx/norm.hpp>
 #include <le2d/context.hpp>
-#include <algorithm>
 #include <cstddef>
 #include <format>
 #include <iterator>
@@ -9,8 +8,6 @@
 #include <vector>
 #include "enemy.hpp"
 #include "kvf/time.hpp"
-#include "le2d/asset_loader.hpp"
-#include "le2d/data_loader.hpp"
 #include "le2d/drawable/text.hpp"
 #include "lighthouse.hpp"
 #include "util/random.hpp"
@@ -18,10 +15,9 @@
 namespace miracle {
 Game::Game(gsl::not_null<le::ServiceLocator const*> services) : m_services(services), m_lighthouse(services), m_light(services) {
 	spawn_wave();
-	auto const& data_loader = services->get<le::IDataLoader>();
-	auto const& context = services->get<le::Context>();
-	auto const asset_loader = le::AssetLoader{&data_loader, &context};
-	m_font = asset_loader.load_font("fonts/specialElite.ttf");
+	auto const& asset_loader = services->get<le::AssetLoader>();
+	m_font = asset_loader.load<le::IFont>("fonts/specialElite.ttf");
+	if (!m_font) { throw std::runtime_error{"Failed to load font"}; }
 }
 
 void Game::on_cursor_pos(le::event::CursorPos const& cursor_pos) {
@@ -79,7 +75,7 @@ void Game::update_score(int points) {
 	m_score += points;
 	m_score_str.clear();
 	std::format_to(std::back_inserter(m_score_str), "Score: {}", m_score);
-	m_score_text.set_string(m_font, m_score_str);
+	m_score_text.set_string(*m_font, m_score_str);
 }
 
 void Game::update_health_text() {
@@ -95,7 +91,7 @@ void Game::update_health_text() {
 		std::format_to(std::back_inserter(m_health_str), "Health: {:.1f}", m_lighthouse.get_health());
 	}
 
-	m_health_text.set_string(m_font, m_health_str);
+	m_health_text.set_string(*m_font, m_health_str);
 }
 
 } // namespace miracle
