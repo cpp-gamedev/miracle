@@ -2,6 +2,8 @@
 #include <kvf/time.hpp>
 #include <le2d/drawable/shape.hpp>
 #include <le2d/event.hpp>
+#include <le2d/input/action.hpp>
+#include <le2d/input/scoped_mapping.hpp>
 #include <le2d/renderer.hpp>
 #include <le2d/service_locator.hpp>
 #include <memory>
@@ -16,8 +18,6 @@ class Game {
   public:
 	explicit Game(gsl::not_null<le::ServiceLocator const*> services);
 
-	void on_cursor_pos(le::event::CursorPos const& cursor_pos);
-
 	void tick(kvf::Seconds dt);
 	void render(le::Renderer& renderer) const;
 	void update_score(int points);
@@ -25,7 +25,13 @@ class Game {
 	void spawn_wave();
 
   private:
+	void on_look(le::input::action::Value value);
+
 	gsl::not_null<le::ServiceLocator const*> m_services;
+
+	le::input::ScopedActionMapping m_action_mapping;
+	le::input::action::Cursor m_look_action{};
+
 	Lighthouse m_lighthouse;
 	Light m_light;
 

@@ -13,16 +13,20 @@
 #include "util/random.hpp"
 
 namespace miracle {
-Game::Game(gsl::not_null<le::ServiceLocator const*> services) : m_services(services), m_lighthouse(services), m_light(services) {
-	spawn_wave();
+Game::Game(gsl::not_null<le::ServiceLocator const*> services)
+	: m_services(services), m_action_mapping(&services->get<le::input::Router>()), m_lighthouse(services), m_light(services) {
 	auto const& asset_loader = services->get<le::AssetLoader>();
 	m_font = asset_loader.load<le::IFont>("fonts/specialElite.ttf");
 	if (!m_font) { throw std::runtime_error{"Failed to load font"}; }
+
+	m_action_mapping.bind_action(&m_look_action, [this](le::input::action::Value const& v) { on_look(v); });
+
+	spawn_wave();
 }
 
-void Game::on_cursor_pos(le::event::CursorPos const& cursor_pos) {
+void Game::on_look(le::input::action::Value const value) {
 	auto const framebuffer_size = m_services->get<le::Context>().framebuffer_size();
-	m_cursor_pos = cursor_pos.normalized.to_target(framebuffer_size);
+	m_cursor_pos = le::ndc::vec2{value.get<glm::vec2>()}.to_target(framebuffer_size);
 }
 
 void Game::tick([[maybe_unused]] kvf::Seconds const dt) {
